@@ -15,13 +15,23 @@ env = gym.make('LunarLander-v2')
 playing_time = 10000
 
 # population size
-population_size = 15
+population_size = 20
 
 
 
 # Population
 population = Population(population_size)
 
+# Read existing weights.
+file = open('best_records/topscore.txt', 'r')
+weights_string = file.read().splitlines()
+file.close()
+weights = []
+for i in range(weights_string.__len__()):
+    weights.append( np.float(weights_string[i]) )
+
+# Load weights with best score
+population.update_individuals_with_pre_existed_weights(weights)
 # Number of generations.
 for i in range(5000):
     # Iterate over all individuals of current generation, each individual plays the game.
@@ -30,20 +40,20 @@ for i in range(5000):
         observation = env.reset()
         award = 0
         for t in range(playing_time):
-            if i >30:
+            if i >0:
                 env.render()
             action = population.individuals[individual_index].get_action(observation, 0.5)
 
             observation, reward, done, info = env.step(int(action))
             award += reward
-            #print(env.observation_space.low)
             if done:
                 break
         population.individuals[individual_index].fitness = award
-        #print(" current award: ",award)
+
     population.update_current_generation_best_fitness()
     print(" generation # ", i + 1, "max score : ", population.current_generation_best_fitness)
-    print("Population best individual pitput", population.get_best_individual().brain.neural_network_output)
+    print("Population best individual output", population.get_best_individual().brain.neural_network_output)
+
     # Reproduce by creating new generation with parents traits.
     population.reproduce()
     np.savetxt("topscore.txt",population.get_best_individual().brain.weights_to_array(), fmt='%f')

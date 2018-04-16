@@ -27,21 +27,21 @@ class NeuralNetwork(Math):
         self.n_output_layer_nodes = number_of_output_nodes
 
         # Matrix(hidden_nodes(rows) x input_nodes(cols))
-        self.input_layer_weights = np.random.uniform(-0.5, 0.5, (self.n_hidden_layer_nodes, self.n_input_layer_nodes))
-        self.input_layer_bias = np.random.uniform(-0.6, 0.6, (1, self.n_hidden_layer_nodes))
+        self.input_layer_weights = np.random.uniform(-0.1, 0.1, (self.n_hidden_layer_nodes, self.n_input_layer_nodes)) / self.n_input_layer_nodes
+        self.input_layer_bias = np.random.uniform(-0, 0, (1, self.n_hidden_layer_nodes))
 
         # Matrix(output_nodes(rows) x hidden_nodes(cols))
-        self.hidden_layer_weights = np.random.uniform(-1, 1, (self.n_output_layer_nodes, self.n_hidden_layer_nodes))
+        self.hidden_layer_weights = np.random.uniform(-0.1, 0.1, (self.n_output_layer_nodes, self.n_hidden_layer_nodes)) / self.n_hidden_layer_nodes
 
         self.neural_network_output = []
 
     def feed_forward(self, input):
 
-        output_from_hidden_layer = (np.dot(self.input_layer_weights, input) + self.input_layer_bias)
+        output_from_hidden_layer = (np.dot(self.input_layer_weights, input) + self.input_layer_bias )
 
         # Reshape -1 because it is array of arrays, we need it one array of size 1*n.
         self.neural_network_output = self.softmax(np.dot(self.hidden_layer_weights, output_from_hidden_layer.reshape(-1)))
-        # print(self.neural_network_output)
+
     # Convert weights and bias term into 1d array ( to act as dna ).
     def weights_to_array(self):
         weights_and_biases = np.concatenate((self.input_layer_weights.reshape(-1),

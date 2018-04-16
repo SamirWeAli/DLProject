@@ -7,7 +7,7 @@ class Individual:
         if neural_network:
             self.brain = neural_network
         else:
-            self.brain = nn.NeuralNetwork(8, 13, 4)
+            self.brain = nn.NeuralNetwork(8, 8, 4)
 
         self.fitness = 0
 
