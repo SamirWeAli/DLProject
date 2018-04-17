@@ -28,7 +28,7 @@ class Game:
         population = Population(POPULATION_SIZE)
 
         # Load weights with best score
-        population.update_individuals_with_pre_existed_weights(self.read_weights(WEIGHTS_LOAD_FILE_PATH))
+        population.update_individuals_with_pre_existed_weights(self.read_weights(TOP_SCORE_WEIGHTS_LOAD_FILE_PATH))
 
         # Number of generations.
         for i in range(NUMBER_OF_GENERATIONS):
@@ -61,7 +61,7 @@ class Game:
 
             # Reproduce by creating new generation with parents traits.
             population.reproduce()
-            np.savetxt(WEIGHTS_SAVE_FILE_PATH, population.get_best_individual().brain.weights_to_array(), fmt='%f')
+            np.savetxt(TOP_SCORE_WEIGHTS_SAVE_FILE_PATH, population.get_best_individual().brain.weights_to_array(), fmt='%f')
 
         env.close()
 

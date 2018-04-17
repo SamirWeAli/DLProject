@@ -1,16 +1,18 @@
 import numpy as np
 
 from src.population.individual import Individual
+from src.configs import *
 
 
 class Population:
     def __init__(self, pop_size):
         self.first_time_debug = True
 
-        self.mutation_rate = 0.0001
+        self.mutation_rate = MUTATION_RATE
         self.population_size = pop_size
         self.individuals = []
         self.current_generation_best_fitness = -1000
+
         # Set initial population individuals with random weights.
         for i in range(self.population_size):
             self.individuals.append(Individual())
@@ -45,7 +47,7 @@ class Population:
     def reproduce(self):
         if self.first_time_debug:
             self.first_time_debug = False
-            np.savetxt("initweights.txt", self.get_best_individual().brain.weights_to_array(), fmt='%f')
+            np.savetxt(WEIGHTS_SAVE_FILE_PATH, self.get_best_individual().brain.weights_to_array(), fmt='%f')
 
         # Create mating pool based on fitness of every individual, higher fitness means  higher selection probability
         mating_pool = []
@@ -111,11 +113,13 @@ class Population:
 
     def mutate(self, offspring_DNA):
         mutated_DNA = offspring_DNA.copy()
+
         for i in range(len(offspring_DNA)):
+
             # Probability to mutate
             mutation_prob = np.random.rand(1)
             if (mutation_prob <= self.mutation_rate):
-                mutated_DNA[i] = np.random.uniform(-0.1, 0.1)
+                mutated_DNA[i] = np.random.uniform(MUTATION_VALUE_RANGE[0], MUTATION_VALUE_RANGE[1])
 
         return offspring_DNA
 

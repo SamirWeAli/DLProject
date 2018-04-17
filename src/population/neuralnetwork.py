@@ -1,5 +1,5 @@
 import numpy as np
-
+from src.configs import *
 
 class Math:
     @staticmethod
@@ -25,12 +25,13 @@ class NeuralNetwork(Math):
         self.n_output_layer_nodes = number_of_output_nodes
 
         # Matrix (hidden_nodes(rows) x input_nodes(cols))
-        self.input_layer_weights = np.random.uniform(-0.1, 0.1, (
-            self.n_hidden_layer_nodes, self.n_input_layer_nodes)) / self.n_input_layer_nodes # TODO @Ali ASK?
-        self.input_layer_bias = np.random.uniform(-0, 0, (1, self.n_hidden_layer_nodes))
+        self.input_layer_weights = np.random.uniform(INPUT_LAYER_WEIGHTS_RANGE[0], INPUT_LAYER_WEIGHTS_RANGE[1], (
+            self.n_hidden_layer_nodes, self.n_input_layer_nodes)) / self.n_input_layer_nodes  # TODO @Ali ASK?
+
+        self.input_layer_bias = np.random.uniform(INPUT_LAYER_BIAS_RANGE[0], INPUT_LAYER_BIAS_RANGE[1], (1, self.n_hidden_layer_nodes))
 
         # Matrix(output_nodes(rows) x hidden_nodes(cols))
-        self.hidden_layer_weights = np.random.uniform(-0.1, 0.1, (
+        self.hidden_layer_weights = np.random.uniform(HIDDEN_LAYER_WEIGHTS_RANGE[0], HIDDEN_LAYER_WEIGHTS_RANGE[1], (
             self.n_output_layer_nodes, self.n_hidden_layer_nodes)) / self.n_hidden_layer_nodes
 
         self.neural_network_output = []
