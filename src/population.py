@@ -1,7 +1,8 @@
-from individual import Individual
+from copy import copy
 
 import numpy as np
-from copy import copy
+
+from src.individual import Individual
 class Population:
 
     def __init__(self, pop_size):

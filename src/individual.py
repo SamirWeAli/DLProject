@@ -1,5 +1,7 @@
-import neuralnetwork as nn
 import numpy as np
+
+from src import neuralnetwork as nn
+
 
 class Individual:
 
