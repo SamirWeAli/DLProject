@@ -1,10 +1,9 @@
 import numpy as np
 
-from src import neuralnetwork as nn
+from src.population import neuralnetwork as nn
 
 
 class Individual:
-
     def __init__(self, neural_network=None):
         if neural_network:
             self.brain = neural_network
@@ -35,5 +34,5 @@ class Individual:
             if self.brain.neural_network_output[i] > max_output:
                 action = i
                 max_output = self.brain.neural_network_output[i]
-        #print(" action ", action)
+        # print(" action ", action)
         return np.argmax(self.brain.neural_network_output)

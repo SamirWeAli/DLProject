@@ -1,10 +1,9 @@
-from copy import copy
-
 import numpy as np
 
-from src.individual import Individual
-class Population:
+from src.population.individual import Individual
 
+
+class Population:
     def __init__(self, pop_size):
         self.first_time_debug = True
 
@@ -20,18 +19,17 @@ class Population:
 
         for i in range(self.population_size):
             self.current_generation_best_fitness = np.maximum(self.current_generation_best_fitness,
-                                                          int(self.individuals[i].fitness))
+                                                              int(self.individuals[i].fitness))
 
     # Get best individual.
     def get_best_individual(self):
         best_individual = self.individuals[0]
 
-        for i in range(1,self.population_size):
+        for i in range(1, self.population_size):
             if self.individuals[i].fitness > best_individual.fitness:
                 best_individual = self.individuals[i]
 
         return best_individual
-
 
     # Return worst individual in population
     def get_worst_individual(self):
@@ -59,7 +57,7 @@ class Population:
         # Number of occurrences in mating_pool is based on fitness.
         # Iterate over all individuals each individual will have n = fintness positions in mating pool.
         for i in range(self.population_size):
-            for j in range(int(self.individuals[i].fitness + (-min_fitness+5))):
+            for j in range(int(self.individuals[i].fitness + (-min_fitness + 5))):
                 mating_pool.append(i)
 
         # Create new temp individuals ( population).
@@ -70,7 +68,6 @@ class Population:
 
         # For  n = population size , select two parents  make crossover process and return new weights for offspring.
         for i in range(self.population_size):
-
             # Select two random parents.
             # Select index from mating pool.
             indx_A = mating_pool[np.random.randint(len(mating_pool))]
@@ -91,9 +88,7 @@ class Population:
         # Set current individuals to new individuals.
         self.individuals = temp_individuals.copy()
 
-
     def cross_over(self, parent_a, parent_b):
-
 
         # Cross over between DNA's ( weights ).
         parent_a_weights_array = parent_a.brain.weights_to_array()
@@ -102,12 +97,11 @@ class Population:
         # 0 to midpoint from  parent_A DNA , midpoint to DNA end from parent_B
         midpoint = np.random.randint(0, parent_a_weights_array.size)
 
-
         # Offspring DNA
         offspring_DNA = []
 
         # Set offspring DNA  from parents by midpoint
-        for i in range (len(parent_a_weights_array)):
+        for i in range(len(parent_a_weights_array)):
             if i < midpoint:
                 offspring_DNA.append(parent_a_weights_array[i])
             else:
@@ -120,13 +114,13 @@ class Population:
         for i in range(len(offspring_DNA)):
             # Probability to mutate
             mutation_prob = np.random.rand(1)
-            if(mutation_prob <= self.mutation_rate):
-                mutated_DNA[i] = np.random.uniform(-0.1 , 0.1)
+            if (mutation_prob <= self.mutation_rate):
+                mutated_DNA[i] = np.random.uniform(-0.1, 0.1)
 
         return offspring_DNA
 
     # Update individuals with pre-existed weights.
-    def update_individuals_with_pre_existed_weights(self,weights):
+    def update_individuals_with_pre_existed_weights(self, weights):
         for i in range(self.population_size):
             self.individuals[i].brain.array_to_weights(weights)
         print(weights)
